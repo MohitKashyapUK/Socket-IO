@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 #app.config['CORS_ALLOWED_ORIGINS'] = '*'
 #cors = CORS(app, resources={r"/*": {"origins": "*"}})
-socketio = SocketIO(app, cors_allowed_origins='*')#,  async_mode="eventlet")
+socketio = SocketIO(app, cors_allowed_origins='*',  async_mode="eventlet")
 #, logger=True, engineio_logger=True)
 
 @app.route("/")
