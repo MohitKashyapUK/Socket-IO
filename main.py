@@ -22,6 +22,5 @@ def message(message):
     emit(message)
 
 if __name__ == "__main__":
-    socketio.run(app)
-    #, cors_allowed_origins='*')
+    socketio.run(app, cors_allowed_origins='*')
     #, host='localhost', port=26543)
