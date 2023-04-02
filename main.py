@@ -14,7 +14,7 @@ def index():
 
 @socketio.on('connect')
 def test_connect(auth):
-    emit('message', {'data': 'Connected'})
+    emit('message', {'data': auth})
 
 @socketio.on("message")
 def message(message):
