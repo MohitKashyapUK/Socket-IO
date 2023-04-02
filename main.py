@@ -20,4 +20,4 @@ def message(message):
     emit(message)
 
 if __name__ == "__main__":
-    socketio.run(app)
+    socketio.run(app, monkey_patch=True)
