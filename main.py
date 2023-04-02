@@ -13,8 +13,8 @@ def index():
     return "Hello!"
 
 @socketio.on('connect')
-def test_connect(auth):
-    emit('message', {'data': auth})
+def test_connect():
+    emit('message', {'Status': "Connected"})
 
 @socketio.on("message")
 def message(message):
