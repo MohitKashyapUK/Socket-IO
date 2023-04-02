@@ -27,7 +27,7 @@ def test_connect(auth):
 
 @socketio.on("message")
 def message(message):
-    emit("message",message)
+    emit("message", {"data": str(message)})
 
 if __name__ == "__main__":
     socketio.run(app, server='eventlet')
