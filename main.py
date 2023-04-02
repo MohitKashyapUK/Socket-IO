@@ -14,7 +14,7 @@ def index():
 @app.route("/check")
 def check():
     import subprocess
-    result = subprocess.run(["echo", "$PATH"], capture_output=True, text=True).stdout
+    result = subprocess.run(["export", "PATH=$PATH:/usr/local/bin"], capture_output=True, text=True).stdout
     return result
 
 @app.route("/run")
