@@ -5,16 +5,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
-socketio = SocketIO(app, cors_allowed_origins='*', async_mode="eventlet")
+socketio = SocketIO(app, reconnect=True, reconnect_timeout=5, ping_timeout=120, cors_allowed_origins='*', async_mode="eventlet")
 
 @app.route("/")
 def index():
     return "Hello!"
-
-@app.route("/run")
-def run():
-    import subprocess
-    return subprocess.run(["ls", "-alh"], capture_output=True, text=True).stdout
 
 @socketio.on('connect')
 def test_connect(auth):
