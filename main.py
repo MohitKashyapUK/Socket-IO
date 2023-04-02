@@ -2,6 +2,7 @@ import eventlet
 from flask import Flask
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
+import time
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -14,11 +15,14 @@ def index():
 
 @socketio.on('connect')
 def test_connect():
-    emit('message', {'Status': "Connected"})
+    emit('message', {'data': "Connected"})
 
 @socketio.on("message")
 def message(message):
-    emit("message", {"data": str(message)})
+    List = ["Hello!", "Hi!", "Sasriya kaal!", "Jai hind!"]
+    for i in List:
+        emit("message", {"data": i})
+        time.sleep(2)
 
 if __name__ == "__main__":
     socketio.run(app, server='eventlet')
