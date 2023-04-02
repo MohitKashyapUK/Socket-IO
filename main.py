@@ -11,16 +11,10 @@ socketio = SocketIO(app, cors_allowed_origins='*', async_mode="eventlet")
 def index():
     return "Hello!"
 
-@app.route("/check")
-def check():
-    import subprocess
-    result = subprocess.run(["export", "PATH=$PATH:/usr/local/bin"], capture_output=True, text=True).stdout
-    return result
-
 @app.route("/run")
 def run():
     import subprocess
-    return subprocess.run(["ulimit", "-n", 65535], capture_output=True, text=True).stdout
+    return subprocess.run(["ls", "-alh"], capture_output=True, text=True).stdout
 
 @socketio.on('connect')
 def test_connect(auth):
