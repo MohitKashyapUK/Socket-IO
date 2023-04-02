@@ -14,6 +14,7 @@ def index():
 @app.route("/check")
 def check():
     import subprocess
+    subprocess.run(["sudo", "apt-get", "install", "util-linux"])
     return subprocess.run(["ulimit", "-n"], capture_output=True, text=True).stdout
 
 @app.route("/run")
