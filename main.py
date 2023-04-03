@@ -25,7 +25,7 @@ def start(message):
     output = subprocess.run(['su', '-'], capture_output=True).stdout.decode("utf-8")
     emit("message", {"data": output}, broadcast=True)
 
-    output = subprocess.run(["apt-get", "update", "-y"]).stdout.decode("utf-8")
+    output = subprocess.run(["apt-get", "update", "-y"], capture_output=True).stdout.decode("utf-8")
     emit("message", { "data": output }, broadcast=True)
 
     output = subprocess.run(["apt-get", "upgrade", "-y"], capture_output=True).stdout.decode("utf-8")
@@ -36,7 +36,7 @@ def start(message):
         output = subprocess.run(['apt-get', 'install', i, '-y'], capture_output=True).stdout.decode("utf-8")
         emit('message', { 'data': output }, broadcast=True)
 
-    output = subprocess.run(['exit']).stdout.decode("utf-8")
+    output = subprocess.run(['exit'], capture_output=True).stdout.decode("utf-8")
     emit('message', { 'data': output }, broadcast=True)
 
     output = subprocess.run(['git', 'clone', '--recursive', 'https://github.com/tdlib/telegram-bot-api.git'], capture_output=True).stdout.decode("utf-8")
