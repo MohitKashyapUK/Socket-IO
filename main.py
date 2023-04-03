@@ -5,7 +5,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
-socketio = SocketIO(app, logger=True, engineio_logger=True)#, cors_allowed_origins='*', async_mode="eventlet")
+socketio = SocketIO(app, logger=True, engineio_logger=True)
 
 @app.route("/")
 def index():
@@ -16,7 +16,7 @@ def test_connect():
     emit('message', { 'data': "Connected" })
 
 @socketio.on("start")
-async def start(message):
+def start(message):
     emit("message", { "data": "Starting!" }, broadcast=True)
     try:
         import subprocess
@@ -41,11 +41,11 @@ async def start(message):
         ]
         for i in commands:
             x = i.split()
-            outputs = await subprocess.run(x, capture_output=True).stdout.decode("utf-8")
+            outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
             emit("message", { "data": outputs }, broadcast=True)
             print(outputs)
         emit("message", { "data": "Completed!" })
-    except e:
+    except Exception as e:
         emit("message", { "data": f"Error occured: {e}" })
 
 @socketio.on("message")
@@ -55,4 +55,4 @@ def message(message):
         emit("message", {"data": i}, broadcast=True)
 
 if __name__ == "__main__":
-    socketio.run(app)#, server='eventlet')
+    socketio.run(app)
