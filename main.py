@@ -106,7 +106,7 @@ def start(message):
         import requests
         import os
         token = os.getenv("TOKEN")
-        res = requests.get(f"http://0.0.0.0:8081/bot{token}/getMe").json()
+        res = requests.get(f"http://127.0.0.1:8081/bot{token}/getMe").json()
         emit("message", { "data": res })
     except Exception as e:
         emit("message", { "data": f"Error occured: {e}" })
