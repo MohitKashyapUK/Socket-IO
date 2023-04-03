@@ -31,8 +31,8 @@ def start(message):
             "rm -rf build",
             "mkdir build",
             "cd build",
-            'CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. -DCMAKE_CXX_FLAGS="-stdlib=libc++" ..',
-            #'CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. ..',
+            #'CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. -DCMAKE_CXX_FLAGS="-stdlib=libc++" ..',
+            'CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. ..',
             "cmake --build . --target install",
             "cd ../..",
             "ls -l telegram-bot-api/bin/telegram-bot-api*"
@@ -41,7 +41,10 @@ def start(message):
         for i in commands:
             try:
                 x = i.split()
-                if count is 3:
+                if count is 1:
+                    import os
+                    os.chdir("/opt/render/project/src")
+                elif count is 3:
                     for s in x:
                         outputss = subprocess.run(["apt-get", "install", s, "-y"], capture_output=True).stdout.decode("utf-8")
                         emit("message", { "data": f"{s}\n{outputss}" }, broadcast=True)
@@ -65,11 +68,23 @@ def start(message):
                     emit("message", { "data": pwd }, broadcast=True)
                     count += 1
                     continue
+                elif count is 9:
+                    import os
+                    emit("message", { "data": "Starting compile!" })
+                    os.system('CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. ..')
+                    count += 1
+                    continue
+                elif count is 10:
+                    import os
+                    emit("message", { "data": "cmake" })
+                    os.system("cmake --build . --target install")
+                    count += 1
+                    continue
                 elif count is 11:
                     import os
                     pwd = os.getcwd()
                     emit("message", { "data": pwd }, broadcast=True)
-                    os.system("cd ../..")
+                    os.chdir("/opt/render/project/src")
                     pwd = os.getcwd()
                     emit("message", { "data": pwd }, broadcast=True)
                     count += 1
