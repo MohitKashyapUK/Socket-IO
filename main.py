@@ -7,7 +7,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
-socketio = SocketIO(app)#, cors_allowed_origins='*', async_mode="eventlet")
+socketio = SocketIO(app, logger=True, engineio_logger=True)#, cors_allowed_origins='*', async_mode="eventlet")
 
 @app.route("/")
 def index():
