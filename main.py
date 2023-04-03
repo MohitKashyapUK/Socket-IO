@@ -25,7 +25,7 @@ def start(message):
         commands = [
             "apt-get update",
             "apt-get upgrade",
-            "apt-get install -y make git zlib1g-dev libssl-dev gperf cmake clang-10 libc++-dev libc++abi-dev",
+            "make git zlib1g-dev libssl-dev gperf cmake clang-10 libc++-dev libc++abi-dev",
             "git clone --recursive https://github.com/tdlib/telegram-bot-api.git",
             "cd telegram-bot-api",
             "rm -rf build",
@@ -36,12 +36,47 @@ def start(message):
             "cd ../..",
             "ls -l telegram-bot-api/bin/telegram-bot-api*"
         ]
+        count = 1
         for i in commands:
             try:
                 x = i.split()
+                if count is 3:
+                    for s in x:
+                        outputss = subprocess.run(["apt-get", "install", s, "-y"], capture_output=True).stdout.decode("utf-8")
+                        emit("message", { "data": f"{s}\n{outputss}" }, broadcast=True)
+                    count + 1
+                    continue
+                elif count is 5:
+                    import os
+                    pwd = os.getcwd()
+                    emit("message", { "data": pwd }, broadcast=True)
+                    os.chdir("telegram-bot-api/")
+                    pwd = os.getcwd()
+                    emit("message", { "data": pwd }, broadcast=True)
+                    count + 1
+                    continue
+                elif count is 8:
+                    import os
+                    pwd = os.getcwd()
+                    emit("message", { "data": pwd }, broadcast=True)
+                    os.chdir("build/")
+                    pwd = os.getcwd()
+                    emit("message", { "data": pwd }, broadcast=True)
+                    count + 1
+                    continue
+                elif count is 11:
+                    import os
+                    pwd = os.getcwd()
+                    emit("message", { "data": pwd }, broadcast=True)
+                    os.chdir("../..")
+                    pwd = os.getcwd()
+                    emit("message", { "data": pwd }, broadcast=True)
+                    count + 1
+                    continue
                 outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
                 emit("message", { "data": f"{i}\n{outputs}" }, broadcast=True)
                 print(outputs)
+                count + 1
             except Exception as e:
                 emit("message", { "data": f"Loop Error occured: {e}" })
         emit("message", { "data": "Completed!" })
