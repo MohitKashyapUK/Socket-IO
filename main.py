@@ -31,7 +31,8 @@ def start(message):
             "rm -rf build",
             "mkdir build",
             "cd build",
-            'CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. ..',
+            'CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. -DCMAKE_CXX_FLAGS="-stdlib=libc++" ..',
+            #'CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. ..',
             "cmake --build . --target install",
             "cd ../..",
             "ls -l telegram-bot-api/bin/telegram-bot-api*"
@@ -68,7 +69,7 @@ def start(message):
                     import os
                     pwd = os.getcwd()
                     emit("message", { "data": pwd }, broadcast=True)
-                    os.chdir("../..")
+                    os.system("cd ../..")
                     pwd = os.getcwd()
                     emit("message", { "data": pwd }, broadcast=True)
                     count += 1
