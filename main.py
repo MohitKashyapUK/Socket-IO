@@ -21,10 +21,11 @@ def start(message):
 
     try:
         import subprocess
-        output = subprocess.run(['su', '-'], capture_output=True).stdout.decode("utf-8")
+        
+        output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
         emit("message", {"data": output}, broadcast=True)
     
-        output = subprocess.run(["apt-get", "update", "-y"], capture_output=True).stdout.decode("utf-8")
+        """output = subprocess.run(["apt-get", "update", "-y"], capture_output=True).stdout.decode("utf-8")
         emit("message", { "data": output }, broadcast=True)
     
         output = subprocess.run(["apt-get", "upgrade", "-y"], capture_output=True).stdout.decode("utf-8")
@@ -64,7 +65,7 @@ def start(message):
         emit('message', { 'data': output }, broadcast=True)
     
         output = subprocess.run(['ls', '-l', 'telegram-bot-api/bin/telegram-bot-api*'], capture_output=True).stdout.decode("utf-8")
-        emit('message', { 'data': output }, broadcast=True)
+        emit('message', { 'data': output }, broadcast=True)"""
     except e:
         emit("message", { "data": f"Error occured: {e}" })
 
