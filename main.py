@@ -21,7 +21,7 @@ async def start(message):
     try:
         import subprocess
         output = await subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
-        await emit("message", {"data": output}, broadcast=True)
+        emit("message", {"data": output}, broadcast=True)
         commands = [
             "su -",
             "apt-get update",
@@ -42,7 +42,7 @@ async def start(message):
         for i in commands:
             x = i.split()
             outputs = await subprocess.run(x, capture_output=True).stdout.decode("utf-8")
-            await emit("message", { "data": outputs }, broadcast=True)
+            emit("message", { "data": outputs }, broadcast=True)
             print(outputs)
         emit("message", { "data": "Completed!" })
     except e:
