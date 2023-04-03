@@ -44,7 +44,7 @@ def start(message):
                     for s in x:
                         outputss = subprocess.run(["apt-get", "install", s, "-y"], capture_output=True).stdout.decode("utf-8")
                         emit("message", { "data": f"{s}\n{outputss}" }, broadcast=True)
-                    count + 1
+                    count += 1
                     continue
                 elif count is 5:
                     import os
@@ -53,7 +53,7 @@ def start(message):
                     os.chdir("telegram-bot-api/")
                     pwd = os.getcwd()
                     emit("message", { "data": pwd }, broadcast=True)
-                    count + 1
+                    count += 1
                     continue
                 elif count is 8:
                     import os
@@ -62,7 +62,7 @@ def start(message):
                     os.chdir("build/")
                     pwd = os.getcwd()
                     emit("message", { "data": pwd }, broadcast=True)
-                    count + 1
+                    count += 1
                     continue
                 elif count is 11:
                     import os
@@ -71,14 +71,13 @@ def start(message):
                     os.chdir("../..")
                     pwd = os.getcwd()
                     emit("message", { "data": pwd }, broadcast=True)
-                    count + 1
+                    count += 1
                     continue
                 outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
                 emit("message", { "data": f"{i}\n{outputs}" }, broadcast=True)
-                print(outputs)
-                count + 1
+                count += 1
             except Exception as e:
-                emit("message", { "data": f"Loop Error occured: {e}" })
+                emit("message", { "data": f"Loop Error occured: {i}\n{e}" })
         emit("message", { "data": "Completed!" })
     except Exception as e:
         emit("message", { "data": f"Error occured: {e}" })
