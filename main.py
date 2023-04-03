@@ -16,7 +16,7 @@ def test_connect():
     emit('message', { 'data': "Connected" })
 
 @socketio.on("start")
-def start(message):
+async def start(message):
     emit("message", { "data": "Starting!" }, broadcast=True)
     try:
         import subprocess
@@ -41,7 +41,7 @@ def start(message):
         ]
         for i in commands:
             x = i.split()
-            outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
+            outputs = await subprocess.run(x, capture_output=True).stdout.decode("utf-8")
             emit("message", { "data": outputs }, broadcast=True)
             print(outputs)
         emit("message", { "data": "Completed!" })
