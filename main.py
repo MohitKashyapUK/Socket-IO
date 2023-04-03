@@ -23,13 +23,9 @@ def start(message):
         output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
         emit("message", {"data": output}, broadcast=True)
         commands = [
-            "su -",
             "apt-get update",
-            "apt-get install sudo",
-            "which sudo",
-            "sudo apt-get update",
-            "sudo apt-get upgrade",
-            "sudo apt-get install -y make git zlib1g-dev libssl-dev gperf cmake clang-10 libc++-dev libc++abi-dev",
+            "apt-get upgrade",
+            "apt-get install -y make git zlib1g-dev libssl-dev gperf cmake clang-10 libc++-dev libc++abi-dev",
             "git clone --recursive https://github.com/tdlib/telegram-bot-api.git",
             "cd telegram-bot-api",
             "rm -rf build",
