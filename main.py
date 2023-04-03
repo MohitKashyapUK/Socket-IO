@@ -33,8 +33,8 @@ def start():
 
     requirements = ['make', 'git', 'zlib1g-dev', 'libssl-dev', 'gperf', 'cmake', 'clang', 'libc++-dev', 'libc++abi-dev']
     for i in requirements:
-	output = subprocess.run(['apt-get', 'install', i, '-y'], capture_output=True).stdout.decode("utf-8")
-	emit('message', { 'data': output }, broadcast=True)
+        output = subprocess.run(['apt-get', 'install', i, '-y'], capture_output=True).stdout.decode("utf-8")
+        emit('message', { 'data': output }, broadcast=True)
 
     output = subprocess.run(['exit']).stdout.decode("utf-8")
     emit('message', { 'data': output }, broadcast=True)
