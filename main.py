@@ -20,7 +20,7 @@ def test_connect():
 def message(message):
     List = ["Hello!", "Hi!", "Sasriya kaal!", "Jai hind!"]
     for i in List:
-        emit("message", {"data": i})
+        emit("message", {"data": i}, broadcast=True)
 
 if __name__ == "__main__":
     socketio.run(app, server='eventlet')
