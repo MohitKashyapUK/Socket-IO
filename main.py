@@ -15,12 +15,12 @@ def index():
 def test_connect():
     emit('message', { 'data': "Connected" })
 
-#@socketio.on("start")
-async def start():
+@socketio.on("start")
+def start(message):
     emit("message", { "data": "Starting!" }, broadcast=True)
     try:
         import subprocess
-        output = await subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
+        output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
         emit("message", {"data": output}, broadcast=True)
         commands = [
             "su -",
@@ -41,7 +41,7 @@ async def start():
         ]
         for i in commands:
             x = i.split()
-            outputs = await subprocess.run(x, capture_output=True).stdout.decode("utf-8")
+            outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
             emit("message", { "data": outputs }, broadcast=True)
             print(outputs)
         emit("message", { "data": "Completed!" })
@@ -49,12 +49,10 @@ async def start():
         emit("message", { "data": f"Error occured: {e}" })
 
 @socketio.on("message")
-async def message(message):
+def message(message):
     List = ["Hello!", "Hi!", "Sasriya kaal!", "Jai hind!"]
     for i in List:
         emit("message", {"data": i}, broadcast=True)
-    await start()
-    emit("message", { "data": "Ended!" })
 
 if __name__ == "__main__":
     socketio.run(app)#, server='eventlet')
