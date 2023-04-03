@@ -18,15 +18,16 @@ def test_connect():
 @socketio.on("start")
 def start(message):
     emit("message", { "data": "Starting!" }, broadcast=True)
-
     try:
         import subprocess
         output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
         emit("message", {"data": output}, broadcast=True)
-
         commands = [
-            "sudo apt-get update -y",
-            "sudo apt-get upgrade -y",
+            "su -",
+            "apt-get update",
+            "apt-get install sudo",
+            "sudo apt-get update",
+            "sudo apt-get upgrade",
             "sudo apt-get install -y make git zlib1g-dev libssl-dev gperf cmake clang-10 libc++-dev libc++abi-dev",
             "git clone --recursive https://github.com/tdlib/telegram-bot-api.git",
             "cd telegram-bot-api",
@@ -38,10 +39,10 @@ def start(message):
             "cd ../..",
             "ls -l telegram-bot-api/bin/telegram-bot-api*"
         ]
-
-        for i in commands:
-            outputs = subprocess.run(i.split(), capture_output=True).stdout.decode("utf-8")
+        for i.split() in commands:
+            outputs = subprocess.run(i, capture_output=True).stdout.decode("utf-8")
             emit("message", { "data": outputs }, broadcast=True)
+            print(outputs)
     except e:
         emit("message", { "data": f"Error occured: {e}" })
 
