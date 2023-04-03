@@ -39,8 +39,9 @@ def start(message):
             "cd ../..",
             "ls -l telegram-bot-api/bin/telegram-bot-api*"
         ]
-        for i.split() in commands:
-            outputs = subprocess.run(i, capture_output=True).stdout.decode("utf-8")
+        for i in commands:
+            x = i.split()
+            outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
             emit("message", { "data": outputs }, broadcast=True)
             print(outputs)
     except e:
