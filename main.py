@@ -15,8 +15,8 @@ def index():
 def test_connect():
     emit('message', { 'data': "Connected" })
 
-@socketio.on("start")
-async def start(message):
+#@socketio.on("start")
+async def start():
     emit("message", { "data": "Starting!" }, broadcast=True)
     try:
         import subprocess
@@ -49,10 +49,12 @@ async def start(message):
         emit("message", { "data": f"Error occured: {e}" })
 
 @socketio.on("message")
-def message(message):
+async def message(message):
     List = ["Hello!", "Hi!", "Sasriya kaal!", "Jai hind!"]
     for i in List:
         emit("message", {"data": i}, broadcast=True)
+    await start()
+    emit("message", { "data": "Ended!" })
 
 if __name__ == "__main__":
     socketio.run(app)#, server='eventlet')
