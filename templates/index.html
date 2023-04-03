@@ -18,11 +18,12 @@
         document.getElementById("p").innerHTML += t + "<br />";
     }
 
-    const socket = io('https://flask-production-8f4c.up.railway.app', { cors_allowed_origins: '*' });
+    const socket = io();
 
     socket.on('connect', () => {
+        set("Connecting!")
         socket.emit('message', { data: 'connected' });
-        socket.emit('message', { data: 'Start!' });
+        socket.emit('start', { data: 'Start!' });
     });
 
     socket.on("message", m => {
