@@ -36,6 +36,7 @@ def start(message):
             "cmake --build . --target install",
             "cd ../..",
             "ls -l telegram-bot-api/bin/telegram-bot-api*"
+            "13"
         ]
         count = 1
         for i in commands:
@@ -89,12 +90,24 @@ def start(message):
                     emit("message", { "data": pwd }, broadcast=True)
                     count += 1
                     continue
+                elif count is 13:
+                    import os
+                    os.chdir("telegram-bot-api/bin/")
+                    out = subprocess.run(["./telegram-bot-api", "--api-id=TELEGRAM_API_ID", "--api-hash=TELEGRAM_API_HASH"], capture_output=True).stdout.decode("utf-8")
+                    emit("message", { "data": out })
+                    count += 1
+                    continue
                 outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
                 emit("message", { "data": f"{i}\n{outputs}" }, broadcast=True)
                 count += 1
             except Exception as e:
                 emit("message", { "data": f"Loop Error occured: {i}\n{e}" })
         emit("message", { "data": "Completed!" })
+        import requests
+        import os
+        token = os.getenv("TOKEN")
+        res = requests.get(f"http://0.0.0.0:8081/bot{token}/getMe").json()
+        emit("message", { "data": res })
     except Exception as e:
         emit("message", { "data": f"Error occured: {e}" })
 
