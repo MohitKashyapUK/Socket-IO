@@ -18,7 +18,7 @@ def test_connect():
     emit('message', { 'data': "Connected" })
 
 @socketio.on("start")
-def start():
+def start(message):
     emit("message", { "data": "Starting!" }, broadcast=True)
 
     import subprocess
