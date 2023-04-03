@@ -20,7 +20,7 @@ async def start(message):
     emit("message", { "data": "Starting!" }, broadcast=True)
     try:
         import subprocess
-        await output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
+        output = await subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
         await emit("message", {"data": output}, broadcast=True)
         commands = [
             "su -",
@@ -41,7 +41,7 @@ async def start(message):
         ]
         for i in commands:
             x = i.split()
-            await outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
+            outputs = await subprocess.run(x, capture_output=True).stdout.decode("utf-8")
             await emit("message", { "data": outputs }, broadcast=True)
             print(outputs)
         emit("message", { "data": "Completed!" })
