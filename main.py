@@ -39,7 +39,7 @@ async def start(message):
             "cd ../..",
             "ls -l telegram-bot-api/bin/telegram-bot-api*"
         ]
-        await for i in commands:
+        for i in commands:
             x = i.split()
             await outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
             await emit("message", { "data": outputs }, broadcast=True)
