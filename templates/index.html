@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<pre id="p" ></pre>
+<pre id="p"></pre>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
 
@@ -18,24 +18,23 @@
         document.getElementById("p").innerHTML += t + "<br />";
     }
 
-    // const socket = io('https://flask-production-8f4c.up.railway.app', { cors_allowed_origins: '*' });
-    const socket = io();
+    const socket = io('https://flask-production-8f4c.up.railway.app', { cors_allowed_origins: '*' });
 
     socket.on('connect', () => {
-        set("Connected!");
-        socket.emit('message', {data: 'Connected'});
-		socket.emit('start', { data: 'Start' });
+        socket.emit('message', { data: 'connected' });
+        socket.emit('message', { data: 'Start!' });
     });
 
     socket.on("message", m => {
         set(m.data);
+        console.log(m);
     });
 
     socket.on("disconnect", r => {
         set(r);
     });
 
-    console.log("Started!");
+    set("Started!");
 
 </script>
 
