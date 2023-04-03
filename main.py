@@ -5,7 +5,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
-socketio = SocketIO(app, logger=True, engineio_logger=True)
+socketio = SocketIO(app, logger=True, engineio_logger=True)#, cors_allowed_origins='*', async_mode="eventlet")
 
 @app.route("/")
 def index():
@@ -16,7 +16,7 @@ def test_connect():
     emit('message', { 'data': "Connected" })
 
 @socketio.on("start")
-def start(message):
+async def start(message):
     emit("message", { "data": "Starting!" }, broadcast=True)
     try:
         import subprocess
@@ -26,6 +26,7 @@ def start(message):
             "su -",
             "apt-get update",
             "apt-get install sudo",
+            "which sudo",
             "sudo apt-get update",
             "sudo apt-get upgrade",
             "sudo apt-get install -y make git zlib1g-dev libssl-dev gperf cmake clang-10 libc++-dev libc++abi-dev",
@@ -41,11 +42,11 @@ def start(message):
         ]
         for i in commands:
             x = i.split()
-            outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
+            outputs = await subprocess.run(x, capture_output=True).stdout.decode("utf-8")
             emit("message", { "data": outputs }, broadcast=True)
             print(outputs)
         emit("message", { "data": "Completed!" })
-    except Exception as e:
+    except e:
         emit("message", { "data": f"Error occured: {e}" })
 
 @socketio.on("message")
@@ -55,4 +56,4 @@ def message(message):
         emit("message", {"data": i}, broadcast=True)
 
 if __name__ == "__main__":
-    socketio.run(app)
+    socketio.run(app)#, server='eventlet')
