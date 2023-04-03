@@ -37,10 +37,13 @@ def start(message):
             "ls -l telegram-bot-api/bin/telegram-bot-api*"
         ]
         for i in commands:
-            x = i.split()
-            outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
-            emit("message", { "data": outputs }, broadcast=True)
-            print(outputs)
+            try:
+                x = i.split()
+                outputs = subprocess.run(x, capture_output=True).stdout.decode("utf-8")
+                emit("message", { "data": f"{i}\n{outputs}" }, broadcast=True)
+                print(outputs)
+            except Exception as e:
+                emit("message", { "data": f"Loop Error occured: {e}" })
         emit("message", { "data": "Completed!" })
     except Exception as e:
         emit("message", { "data": f"Error occured: {e}" })
