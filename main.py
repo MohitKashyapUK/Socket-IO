@@ -8,7 +8,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
-wsgi.server(eventlet.listen(("0.0.0.0", 5000), app)
+wsgi.server(eventlet.listen(("0.0.0.0"), app)
 socketio = SocketIO(app, logger=True, engineio_logger=True)#, cors_allowed_origins='*', async_mode="eventlet")
 
 @app.route("/")
