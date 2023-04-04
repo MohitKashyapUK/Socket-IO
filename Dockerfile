@@ -15,8 +15,8 @@ CMD ["gunicorn", "-w", "1", "--threads", "100", "main:app"]
 # Dockerfile for Telegram bot API
 FROM aiogram/telegram-bot-api:latest
 
-ENV TELEGRAM_API_ID="<api-id>"
-ENV TELEGRAM_API_HASH="<api-hash>"
+ENV TELEGRAM_API_ID="27269597"
+ENV TELEGRAM_API_HASH="ef91ab7dfb77baea3d5f87e5d6cd5744"
 
 VOLUME /var/lib/telegram-bot-api
 
