@@ -1,55 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+from flask import Flask, render_template
+from flask_socketio import SocketIO, emit
+from flask_cors import CORS
 
-<pre id="p"></pre>
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+CORS(app)
+socketio = SocketIO(app)#, logger=True, engineio_logger=True)
 
-<button id="start">Start</button>
+@app.route("/")
+def index():
+  return render_template('index.html')
 
-<button id="check">Check</button>
+@socketio.on('connect')
+def test_connect():
+  emit('message', { 'data': "Connected" })
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+@socketio.on("check")
+def check(message):
+  try:
+    import requests
+    import os
+    token = os.getenv("TOKEN")
+    res = requests.get(f"http://localhost:8081/bot{token}/getMe")
+    emit("message", { "data": res.text })
+  except Exception as e:
+    emit("message", { "data": f"Error occured: {e}" })
 
-<script type="text/javascript" charset="utf-8">
+@socketio.on("start")
+def start(message):
+  import os
+  pwd = os.getcwd()
+  emit("message", { "data": pwd })
+  os.chdir("/opt/render/project/src")
+  pwd = os.getcwd()
+  emit("message", { "data": pwd })
+  import subprocess
+  output = subprocess.run("docker run -d -p 8081:8081 --name=telegram-bot-api --restart=always -v telegram-bot-api-data:/var/lib/telegram-bot-api -e TELEGRAM_API_ID=27269597 -e TELEGRAM_API_HASH=ef91ab7dfb77baea3d5f87e5d6cd5744 aiogram/telegram-bot-api:latest", capture_output=True)
+  emit("message", { "data": f"Docker: {output}" })
+  output = subprocess.run("ls -alh", capture_output=True)
+  emit("message", { "data": f"ls: {output}" })
 
-    const $id = id => document.getElementById(id);
+@socketio.on("message")
+def message(message):
+  List = ["Hello!", "Hi!", "Sasriya kaal!", "Jai hind!"]
+  for i in List:
+    emit("message", { "data": i }, broadcast=True)
 
-    function set(t) {
-        $id("p").innerHTML += t + "<br />";
-    }
-
-    const socket = io();
-
-    $id("start").addEventListener("click", () => {
-        socket.emit('start', { data: 'Start!' });
-    });
-
-    $id("check").addEventListener("click", () => {
-        socket.emit("check", { data: "Let's start!" });
-    });
-
-    socket.on('connect', () => {
-        set("Connecting!")
-        socket.emit('message', { data: 'connected' });
-    });
-
-    socket.on("message", m => {
-        set(m.data);
-    });
-
-    socket.on("disconnect", r => {
-        set(r);
-    });
-
-    set("Started!");
-
-</script>
-
-</body>
-</html>
+if __name__ == "__main__":
+  socketio.run(app)
