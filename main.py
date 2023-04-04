@@ -5,7 +5,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 CORS(app)
-socketio = SocketIO(app, logger=True, engineio_logger=True)
+socketio = SocketIO(app)#, logger=True, engineio_logger=True)
 
 @app.route("/")
 def index():
@@ -38,13 +38,12 @@ def start(message):
   
   try:
     import subprocess
+    import os
     output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
     emit("message", {"data": output}, broadcast=True)
-    subprocess.run(['su', '-'])
-    subprocess.run(['apt-get', 'install', 'sudo'])
-    result = subprocess.run(['apt-get', 'update', '&&', 'apt-get', 'upgrade', 'sudo'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    emit('message', { 'data': result.stdout.decode() })
-    emit('message', { 'data': result.stderr.decode() })
+    os.system('su -')
+    os.system('apt-get install sudo')
+    os.system('apt-get update && apt-get upgrade sudo')
     commands = [
       "sudo apt-get update",
       "sudo apt-get upgrade",
