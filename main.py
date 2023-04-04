@@ -28,17 +28,20 @@ def check(message):
 
 @socketio.on("start")
 def start(message):
-  import os
-  pwd = os.getcwd()
-  emit("message", { "data": pwd })
-  os.chdir("/opt/render/project/src")
-  pwd = os.getcwd()
-  emit("message", { "data": pwd })
-  import subprocess
-  output = subprocess.run("docker run -d -p 8081:8081 --name=telegram-bot-api --restart=always -v telegram-bot-api-data:/var/lib/telegram-bot-api -e TELEGRAM_API_ID=27269597 -e TELEGRAM_API_HASH=ef91ab7dfb77baea3d5f87e5d6cd5744 aiogram/telegram-bot-api:latest", capture_output=True)
-  emit("message", { "data": f"Docker: {output}" })
-  output = subprocess.run("ls -alh", capture_output=True)
-  emit("message", { "data": f"ls: {output}" })
+  try:
+    import os
+    pwd = os.getcwd()
+    emit("message", { "data": pwd })
+    os.chdir("/opt/render/project/src")
+    pwd = os.getcwd()
+    emit("message", { "data": pwd })
+    import subprocess
+    output = subprocess.run("docker run -d -p 8081:8081 --name=telegram-bot-api --restart=always -v telegram-bot-api-data:/var/lib/telegram-bot-api -e TELEGRAM_API_ID=27269597 -e TELEGRAM_API_HASH=ef91ab7dfb77baea3d5f87e5d6cd5744 aiogram/telegram-bot-api:latest", capture_output=True)
+    emit("message", { "data": f"Docker: {output}" })
+    output = subprocess.run("ls -alh", capture_output=True)
+    emit("message", { "data": f"ls: {output}" })
+  except Exception as e:
+    emit("message", { "data": f"Error occured: {e}" })
 
 @socketio.on("message")
 def message(message):
