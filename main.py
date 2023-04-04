@@ -53,7 +53,7 @@ def start(message):
       'CXXFLAGS="-stdlib=libc++" CC=/usr/bin/clang-10 CXX=/usr/bin/clang++-10 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=.. ..',
       "cmake --build . --target install",
       "cd ../..",
-      "ls -l telegram-bot-api/bin/telegram-bot-api*"
+      "ls -l telegram-bot-api/bin/telegram-bot-api*",
       "13"
     ]
     count = 1
