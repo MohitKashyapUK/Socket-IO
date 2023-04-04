@@ -42,6 +42,9 @@ def start(message):
     emit("message", {"data": output}, broadcast=True)
     subprocess.run(['su', '-'])
     subprocess.run(['apt-get', 'install', 'sudo'])
+    result = subprocess.run(['apt-get', 'update', '&&', 'apt-get', 'upgrade', 'sudo'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    emit('message', { 'data': result.stdout.decode() })
+    emit('message', { 'data': result.stderr.decode() })
     commands = [
       "sudo apt-get update",
       "sudo apt-get upgrade",
