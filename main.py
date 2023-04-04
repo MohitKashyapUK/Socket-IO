@@ -60,8 +60,8 @@ def start(message):
         for i in commands:
             try:
                 result = subprocess.run(['sudo', 'apt-get', 'update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-		emit('message', { 'data': result.stdout.decode() })
-		emit('message', { 'data': result.stderr.decode() })
+        emit('message', { 'data': result.stdout.decode() })
+        emit('message', { 'data': result.stderr.decode() })
                 x = i.split()
                 if count is 1:
                     import os
