@@ -40,9 +40,10 @@ def start(message):
     import subprocess
     output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
     emit("message", {"data": output}, broadcast=True)
+    subprocess.run(['apt-get', 'install', 'sudo'])
     commands = [
-      "apt-get update",
-      "apt-get upgrade",
+      "sudo apt-get update",
+      "sudo apt-get upgrade",
       "make git zlib1g-dev libssl-dev gperf cmake clang-10 libc++-dev libc++abi-dev",
       "git clone --recursive https://github.com/tdlib/telegram-bot-api.git",
       "cd telegram-bot-api",
@@ -57,18 +58,18 @@ def start(message):
       "13"
     ]
     count = 1
+    result = subprocess.run(['sudo', 'apt-get', 'update', '-y'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    emit('message', { 'data': result.stdout.decode() })
+    emit('message', { 'data': result.stderr.decode() })
     for i in commands:
       try:
-        result = subprocess.run(['apt-get', 'update', '-y'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        emit('message', { 'data': result.stdout.decode() })
-        emit('message', { 'data': result.stderr.decode() })
         x = i.split()
         if count is 1:
           import os
           os.chdir("/opt/render/project/src")
         elif count is 3:
           for s in x:
-            outputss = subprocess.run(["apt-get", "install", s, "-y"], capture_output=True).stdout.decode("utf-8")
+            outputss = subprocess.run(['sudo', "apt-get", "install", s, "-y"], capture_output=True).stdout.decode("utf-8")
             emit("message", { "data": f"{s}\n{outputss}" }, broadcast=True)
           count += 1
           continue
@@ -127,7 +128,7 @@ def start(message):
     import requests
     import os
     token = os.getenv("TOKEN")
-    res = requests.get(f"http://127.0.0.1:8081/bot{token}/getMe").json()
+    res = requests.get(f"http://localhost:8081/bot{token}/getMe").text
     emit("message", { "data": res })
   except Exception as e:
     emit("message", { "data": f"Error occured: {e}" })
