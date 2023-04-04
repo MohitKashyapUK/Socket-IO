@@ -40,6 +40,7 @@ def start(message):
     import subprocess
     output = subprocess.run(["uname", "-a"], capture_output=True).stdout.decode("utf-8")
     emit("message", {"data": output}, broadcast=True)
+    subprocess.run(['su', '-'])
     subprocess.run(['apt-get', 'install', 'sudo'])
     commands = [
       "sudo apt-get update",
