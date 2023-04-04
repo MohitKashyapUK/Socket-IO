@@ -59,7 +59,7 @@ def start(message):
     count = 1
     for i in commands:
       try:
-        result = subprocess.run(['sudo', 'apt-get', 'update'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        result = subprocess.run(['apt-get', 'update', '-y'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         emit('message', { 'data': result.stdout.decode() })
         emit('message', { 'data': result.stderr.decode() })
         x = i.split()
