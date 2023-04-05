@@ -1,3 +1,4 @@
+# python version 3.11.2
 flask==2.2.3
 # dependencies for flask
 click==8.1.3
@@ -8,6 +9,11 @@ itsdangerous==2.1.2
 
 # packages for flask
 requests==2.28.2
+# dependencies for requests
+certifi==2022.12.7
+charset-normalizer==3.1.0
+idna==3.4
+urllib3==1.26.15
 
 # flask production server
 gunicorn==20.1.0
